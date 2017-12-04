@@ -60,8 +60,8 @@ public:
 	}
 
 	void findPath(int length) {
+		int tempCounter = 0;
 		Node current;
-
 		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length; j++) {
 				grid[i][j].h = (abs(goal.x - i) + (abs(goal.y - j)));
@@ -69,21 +69,29 @@ public:
 		}
 		bool found = false;
 		current = start;
-
-
+		cout << "GRID:\n[";
+		for (int i = 0; i < length; i++) {
+			for (int j = 0; j < length; j++) {
+				cout << " {";
+				cout << grid[i][j].x;
+				cout << ", " << grid[i][j].y;
+				cout << "} ";
+			}
+		}
+		cout << " ]";
+		cout << "]" << endl;
 		while (!found) {
 			if (current.x == goal.x && current.y == goal.y) {
 				cout << "GOT HERE" << endl;
 				found = true;
 			}
 			else {
-
 				closedList.push_back(current);
-
+				// Loop through all possible +/- 1 (surrounding node) combinations, adjust for edge cases if necessary
 				for (int k = -1; k <= 1; k++) {
 					for (int l = -1; l <= 1; l++) {
-						if (k != 0 && l != 0){
-							int i, j;
+						int i, j;
+						if (!(k == 0 && l == 0)){
 								if (current.y == 0){
 									if (current.x == 0){
 										i = abs(k);
@@ -116,13 +124,20 @@ public:
 									i = k;
 									j = l;
 								}
-						
-								//cout << "i:\t" << i << "\nj:\t" << j << endl;
-								//cout << "=====currentX:\t" << current.x << "\n=====currentY:\t" << current.y << endl;
+								// JUST FOR TESTING
+								
+								if (tempCounter < 10){
+									cout << "\n======================\nCurrent Closed list at iteration:\n\tX: " << k << "\tY: " << l << endl;
+									cout << "[";
+									for (vector<Node>::iterator i = closedList.begin(); i != closedList.end(); i++){
+										cout << " {" << (*i).x << "," << (*i).y << "} ";
+									}
+									cout << "]" << endl;
+								}
+								
 								for (int i = 0; i < 8; i++){
 									//cout << "test " << i << endl;
 									Node gridAtXiYj = grid[current.x + i][current.y + j];
-							
 									// Check if gridAtXiYj
 									if	(!gridAtXiYj.blocked){
 										openList.push_back(grid[current.x + i][current.y + j]);
@@ -133,34 +148,38 @@ public:
 										else {
 											grid[current.x + i][current.y + j].g = 10 + grid[current.x][current.y].g;
 										}
-
 										grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x][current.y = j].h;	
 									}
 								}
+								// JUST FOR TESTING
+								
+								if (tempCounter < 10){
+									cout << "\nCurrent Closed list at iteration:\n\tX: " << k << "\tY: " << l << endl;
+									cout << "[";
+									for (vector<Node>::iterator i = closedList.begin(); i != closedList.end(); i++){
+										cout << " {" << (*i).x << "," << (*i).y << "} ";
+									}
+									cout << "]\n======================\n" << endl;
+								}
+								
 						}
-						
 					}
 				}
-
 				Node bestChoice = openList[0];
-
 				for (int li = 0; li < (sizeof(openList)/sizeof(openList[0])); li++) {
 					if (openList[li].f < bestChoice.f) {
 						bestChoice = openList[li];
 					}
 				}
-				
 				current = bestChoice;
-				
 			}
+			tempCounter++;
 		}
 			cout << "test" << endl;
 		for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
 					cout << "\nNodex:\t" << (*it).x << "\nNodeY:\t" << (*it).y << endl; 
 		}
 	}
-
-
 };
 
 int main()
