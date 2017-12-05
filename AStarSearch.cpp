@@ -13,7 +13,7 @@ using namespace std;
 struct Node {
 	int x = 0;
 	int y = 0;
-	int f = 10000000;
+	int f = 0;
 	int g = 0;
 	int h = 0;
 	bool start = false;
@@ -123,63 +123,64 @@ public:
 									i = k;
 									j = l;
 								}								
-								//for (int i = 0; i < 8; i++){
-									//cout << "test " << i << endl;
+									// Set Node for potential next node (Current node x + i, current node y + j)
 									Node gridAtXiYj = grid[current.x + i][current.y + j];
 									bool inClosedList = false;
+									
+									// Check if potential next node already exists in closedList
 									for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
-										if ((*it).x == (current.x + i) && (*it).y == (current.y + j)){
+										if ((*it).x == gridAtXiYj.x && (*it).y == gridAtXiYj.y){
 											inClosedList = true;
 										}
 									}
-									// Check if gridAtXiYj
+									
+									/*
+									 If gridAtXiYj is NOT blocked and NOT in closed list, push to open list
+									 and set the node it represents in the grid to have a parent of the 
+									 current node, then set g and f values.
+									*/
 									if	(!gridAtXiYj.blocked && !inClosedList){
-										openList.push_back(grid[current.x + i][current.y + j]);
-										//cout << "JUST PUSHED A BIG ONE" << endl;
 										grid[current.x + i][current.y + j].parent = &current;
-										if (i != 0 && j != 0) {
+										if (i != 0 || j != 0) {
 											grid[current.x + i][current.y + j].g = 14 + grid[current.x][current.y].g;
 										}
 										else {
 											grid[current.x + i][current.y + j].g = 10 + grid[current.x][current.y].g;
 										}
-										
+										grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
+										openList.push_back(grid[current.x + i][current.y + j]);
 									}
-									grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
+
 						}
 					}
 				}
 				
 				Node bestChoice = openList.at(0);
-				cout << "Current Node (BC):\n\tX: " << current.x << "\n\tY:" << current.y << endl;
-				cout << openList.size() << endl;
+			//	cout << "Current Node (BC):\n\tX: " << current.x << "\n\tY:" << current.y << endl;
+				//cout << openList.size() << endl;
 				
 				
 				for (int li = 0; li < openList.size(); li++) {
 				//cout << "Comparison: \nBCf: " << bestChoice.f << "\nBCx: " << bestChoice.x << "\nBCy: " << bestChoice.y << endl;
 					//			cout << "OLf: " << openList[li].f << "\nOLx: " << openList[li].x << "\nOLy: " << openList[li].y << endl;
 					if (openList[li].f < bestChoice.f) {
-						cout << "LI was smaller!" << endl;
 						bestChoice = openList[li];
 					}
 				}
-				
 				current = bestChoice;
-				cout << "Current Node (AC):\n\tX: " << current.x << "\n\tY: " << current.y << endl;
+			//	cout << "Current Node (AC):\n\tX: " << current.x << "\n\tY: " << current.y << endl;
 				if (openList.empty()){
 								found = true;
 				}
 			}
-			cout << "TEST" << endl;
-			closedList.push_back(current);
-			tempCounter++;
-			
-			
+			//closedList.push_back(current);
+			//tempCounter++;
+			cout << "Current node: \n\t" << current.x << "\n\t" << current.y << endl;
 		}
 			cout << "after while loop test" << endl;
-		for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
-					cout << "\nNodex:\t" << (*it).x << "\nNodeY:\t" << (*it).y << endl; 
-		}
+	//	for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
+	//				cout << "\nNodex:\t" << (*it).x << "\nNodeY:\t" << (*it).y << endl; 
+	//	}
 	}
 };
 
