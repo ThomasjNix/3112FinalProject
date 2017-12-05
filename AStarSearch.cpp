@@ -13,7 +13,7 @@ using namespace std;
 struct Node {
 	int x = 0;
 	int y = 0;
-	int f = 0;
+	int f = 10000000;
 	int g = 0;
 	int h = 0;
 	bool start = false;
@@ -29,9 +29,7 @@ private:
 	Node start;
 	Node goal;
 	Node **grid;
-	vector<Node> openList;
 	vector<Node> closedList;
-
 public:
 	Search(Node s, Node g, Node **m) {
 		start = s;
@@ -64,7 +62,7 @@ public:
 		Node current;
 		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length; j++) {
-				grid[i][j].h = (abs(goal.x - i) + (abs(goal.y - j)));
+				grid[i][j].h = (abs(i - goal.x) + (abs(j - goal.y)));
 			}
 		}
 		bool found = false;
@@ -80,13 +78,14 @@ public:
 		}
 		cout << " ]";
 		cout << "]" << endl;
+		//iterates at each step of path
 		while (!found) {
 			if (current.x == goal.x && current.y == goal.y) {
 				cout << "GOT HERE" << endl;
 				found = true;
 			}
 			else {
-				closedList.push_back(current);
+				vector<Node> openList;
 				// Loop through all possible +/- 1 (surrounding node) combinations, adjust for edge cases if necessary
 				for (int k = -1; k <= 1; k++) {
 					for (int l = -1; l <= 1; l++) {
@@ -123,59 +122,61 @@ public:
 								}else{
 									i = k;
 									j = l;
-								}
-								// JUST FOR TESTING
-								
-								if (tempCounter < 10){
-									cout << "\n======================\nCurrent Closed list at iteration:\n\tX: " << k << "\tY: " << l << endl;
-									cout << "[";
-									for (vector<Node>::iterator i = closedList.begin(); i != closedList.end(); i++){
-										cout << " {" << (*i).x << "," << (*i).y << "} ";
-									}
-									cout << "]" << endl;
-								}
-								
-								for (int i = 0; i < 8; i++){
+								}								
+								//for (int i = 0; i < 8; i++){
 									//cout << "test " << i << endl;
 									Node gridAtXiYj = grid[current.x + i][current.y + j];
+									bool inClosedList = false;
+									for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
+										if ((*it).x == (current.x + i) && (*it).y == (current.y + j)){
+											inClosedList = true;
+										}
+									}
 									// Check if gridAtXiYj
-									if	(!gridAtXiYj.blocked){
+									if	(!gridAtXiYj.blocked && !inClosedList){
 										openList.push_back(grid[current.x + i][current.y + j]);
+										//cout << "JUST PUSHED A BIG ONE" << endl;
 										grid[current.x + i][current.y + j].parent = &current;
-										if ((i == 1 || i == -1) && (j == 1 || j == -1)) {
+										if (i != 0 && j != 0) {
 											grid[current.x + i][current.y + j].g = 14 + grid[current.x][current.y].g;
 										}
 										else {
 											grid[current.x + i][current.y + j].g = 10 + grid[current.x][current.y].g;
 										}
-										grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x][current.y = j].h;	
+										
 									}
-								}
-								// JUST FOR TESTING
-								
-								if (tempCounter < 10){
-									cout << "\nCurrent Closed list at iteration:\n\tX: " << k << "\tY: " << l << endl;
-									cout << "[";
-									for (vector<Node>::iterator i = closedList.begin(); i != closedList.end(); i++){
-										cout << " {" << (*i).x << "," << (*i).y << "} ";
-									}
-									cout << "]\n======================\n" << endl;
-								}
-								
+									grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
 						}
 					}
 				}
-				Node bestChoice = openList[0];
-				for (int li = 0; li < (sizeof(openList)/sizeof(openList[0])); li++) {
+				
+				Node bestChoice = openList.at(0);
+				cout << "Current Node (BC):\n\tX: " << current.x << "\n\tY:" << current.y << endl;
+				cout << openList.size() << endl;
+				
+				
+				for (int li = 0; li < openList.size(); li++) {
+				//cout << "Comparison: \nBCf: " << bestChoice.f << "\nBCx: " << bestChoice.x << "\nBCy: " << bestChoice.y << endl;
+					//			cout << "OLf: " << openList[li].f << "\nOLx: " << openList[li].x << "\nOLy: " << openList[li].y << endl;
 					if (openList[li].f < bestChoice.f) {
+						cout << "LI was smaller!" << endl;
 						bestChoice = openList[li];
 					}
 				}
+				
 				current = bestChoice;
+				cout << "Current Node (AC):\n\tX: " << current.x << "\n\tY: " << current.y << endl;
+				if (openList.empty()){
+								found = true;
+				}
 			}
+			cout << "TEST" << endl;
+			closedList.push_back(current);
 			tempCounter++;
+			
+			
 		}
-			cout << "test" << endl;
+			cout << "after while loop test" << endl;
 		for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
 					cout << "\nNodex:\t" << (*it).x << "\nNodeY:\t" << (*it).y << endl; 
 		}
