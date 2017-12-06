@@ -1,5 +1,11 @@
-// AStarSearchProject.cpp : Defines the entry point for the console application.
-//
+/*
+	 AStarSearchProject.cpp : Defines the entry point for the console application.
+	 Authors: Thomas Nix, David Pushard, Elenimarys Henriquez
+	 ITCS 3112, 
+	 Professor Kalpathi Subramanian
+*/
+
+
 #include <iostream>
 #include <algorithm>
 #include <time.h>
@@ -8,12 +14,18 @@
 #include <vector>
 #include <iterator> 
 
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
+
+
+
 using namespace std;
 
 struct Node {
 	int x = 0;
 	int y = 0;
-	int f = 10000000;
+	int f = 0;
 	int g = 0;
 	int h = 0;
 	bool start = false;
@@ -36,55 +48,42 @@ public:
 		goal = g;
 		grid = m;
 	}
-
 	Search(Node **m) {
 		grid = m;
 	}
-
 	void setStart(Node s) {
 		start = s;
 	}
-
 	Node getStart() {
 		return start;
 	}
-
 	void setGoal(Node g) {
 		goal = g;
 	}
-
 	Node getGoal() {
 		return goal;
 	}
-
 	void findPath(int length) {
 		int tempCounter = 0;
 		Node current;
+		current = start;
+		cout << "\n\n====================\nCURRENT NODE: [" << current.x << "," << current.y << "]" << endl;
+		cout << "GOAL NODE: [" << goal.x << "," << goal.y << "]\n====================\n" << endl;
 		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length; j++) {
 				grid[i][j].h = (abs(i - goal.x) + (abs(j - goal.y)));
 			}
 		}
 		bool found = false;
-		current = start;
-		cout << "GRID:\n[";
-		for (int i = 0; i < length; i++) {
-			for (int j = 0; j < length; j++) {
-				cout << " {";
-				cout << grid[i][j].x;
-				cout << ", " << grid[i][j].y;
-				cout << "} ";
-			}
-		}
-		cout << " ]";
-		cout << "]" << endl;
+
 		//iterates at each step of path
 		while (!found) {
 			if (current.x == goal.x && current.y == goal.y) {
-				cout << "GOT HERE" << endl;
+				cout << "Search Completed" << endl;
 				found = true;
 			}
 			else {
+				cout << "Current node: [" << current.x << "," << current.y << "]" << endl;
 				vector<Node> openList;
 				// Loop through all possible +/- 1 (surrounding node) combinations, adjust for edge cases if necessary
 				for (int k = -1; k <= 1; k++) {
@@ -95,18 +94,18 @@ public:
 									if (current.x == 0){
 										i = abs(k);
 										j = abs(l);
-									}else if(current.x == length){
+									}else if(current.x == length-1){
 										i = (-1)*abs(k);
 										j = abs(l);
 									}else{
 										i = k;
 										j = abs(l);
 									}
-								}else if (current.y == length){
+								}else if (current.y == length-1){
 									if (current.x == 0){
 										i = abs(k);
 										j = (-1)*abs(l);
-									}else if(current.x == length){
+									}else if(current.x == length-1){
 										i = (-1)*abs(k);
 										j = (-1)*abs(l);
 									}else{
@@ -116,102 +115,73 @@ public:
 								}else if (current.x == 0){
 									i = abs(k);
 									j = l;
-								}else if (current.x == length){
+								}else if (current.x == length-1){
 									i = (-1)*abs(k);
 									j = l;
 								}else{
 									i = k;
 									j = l;
 								}
-								// JUST FOR TESTING
-								/*
-								if (tempCounter < 10){
-									cout << "\n======================\nCurrent Closed list at iteration:\n\tX: " << k << "\tY: " << l << endl;
-									cout << "[";
-									for (vector<Node>::iterator i = closedList.begin(); i != closedList.end(); i++){
-										cout << " {" << (*i).x << "," << (*i).y << "} ";
-									}
-									cout << "]" << endl;
-									cout << "(Current Node: [" << current.x << "," << current.y << "]" << endl;
-								}
-								*/
-								
-								//for (int i = 0; i < 8; i++){
-									//cout << "test " << i << endl;
-									Node gridAtXiYj = grid[current.x + i][current.y + j];
+									
+									// Default closed list contains bool to false
 									bool inClosedList = false;
+									
+									// Check if potential next node already exists in closedList
 									for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
-										if ((*it).x == (current.x + i) && (*it).y == (current.y + j)){
+										if ((*it).x == grid[current.x + i][current.y + j].x && (*it).y == grid[current.x + i][current.y + j].y){
 											inClosedList = true;
+											cout << "Node [" << (*it).x << "," << (*it).y << "] is in the closed loop!" << endl;
 										}
 									}
-									// Check if gridAtXiYj
-									if	(!gridAtXiYj.blocked && !inClosedList){
-										openList.push_back(grid[current.x + i][current.y + j]);
-										//cout << "JUST PUSHED A BIG ONE" << endl;
+									
+									/*
+									 If grid[current.x + i][current.y + j] is NOT blocked and NOT in closed list, push to open list
+									 and set the node it represents in the grid to have a parent of the 
+									 current node, then set g and f values.
+									*/
+									if	(!grid[current.x + i][current.y + j].blocked && !inClosedList){
 										grid[current.x + i][current.y + j].parent = &current;
-										if (i != 0 && j != 0) {
-											grid[current.x + i][current.y + j].g = 14 + grid[current.x][current.y].g;
+										if (abs(i)==1 && abs(j)==1) {
+											grid[current.x + i][current.y + j].g = 10 + grid[current.x][current.y].g;
 										}
 										else {
 											grid[current.x + i][current.y + j].g = 10 + grid[current.x][current.y].g;
 										}
-										
+										grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
+										openList.push_back(grid[current.x + i][current.y + j]);
+									}else{
+	 									cout << "Node [" << grid[current.x + i][current.y + j].x << "," << grid[current.x + i][current.y + j].y << "] is either blocked or in the closed loop." << endl;
 									}
-									grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
-								//}
-								// JUST FOR TESTING
-								/*
-								if (tempCounter < 10){
-									cout << "\nCurrent Open list at iteration:\n\tX: " << k << "\tY: " << l << endl;
-									cout << "[";
-									for (vector<Node>::iterator i = openList.begin(); i != openList.end(); i++){
-										cout << " {" << (*i).x << "," << (*i).y << "} ";
-									}
-									cout << "]\n======================\n" << endl;
-								}
-								*/
-								
 						}
 					}
 				}
-				Node bestChoice = openList.at(0);
-				cout << "Current Node (BC):\n\tX: " << current.x << "\n\t" << current.y << endl;
-				//cout << openList.size();
-				
-				
-				for (int li = 0; li < openList.size(); li++) {
-				//cout << "Comparison: \nBCf: " << bestChoice.f << "\nBCx: " << bestChoice.x << "\nBCy: " << bestChoice.y << endl;
-					//			cout << "OLf: " << openList[li].f << "\nOLx: " << openList[li].x << "\nOLy: " << openList[li].y << endl;
-					if (openList[li].f < bestChoice.f) {
-						cout << "LI was smaller!" << endl;
-						bestChoice = openList[li];
-					}
+				if (openList.empty()){
+					found = true;
 				}
-				
-				current = bestChoice;
-				cout << "Current Node (AC):\n\tX: " << current.x << "\n\t" << current.y << endl;
-			}
-			closedList.push_back(current);
-			tempCounter++;
+				if (!found){
+					Node bestChoice = openList.at(0);
+					for (int li = 0; li < openList.size(); li++) {
+						if (openList[li].f < bestChoice.f) {
+							bestChoice = openList[li];
+						}
+					}
+					current = bestChoice;
+				}
+			}			
 		}
-			cout << "test" << endl;
-		for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
-					cout << "\nNodex:\t" << (*it).x << "\nNodeY:\t" << (*it).y << endl; 
-		}
+		cout << "End node: [" << current.x << "," << current.y << "]" << endl;
 	}
 };
 
-int main()
+int main(int argc, char **argv)
 {
-	cout << "Enter the length of one side of a square map: " << endl;
-	int length;
-	cin >> length;
+
+	int length = 25;
+	/*
 	Node **grid = new Node*[length];
-	for (int i = 0; i < length; i++) {
+	for (int i = 0; i < length; i++){
 		grid[i] = new Node[length];
 	}
-
 	for (int i = 0; i < length; i++) {
 		for (int j = 0; j < length; j++) {
 			grid[i][j].x = i;
@@ -221,18 +191,37 @@ int main()
 
 	int startX, startY, goalX, goalY;
 
-	cout << "Enter a starting Node x and then y position: " << endl;
-	cin >> startX >> startY;
-
-	cout << "Enter a goal Node x and then Y position: " << endl;
-	cin >> goalX >> goalY;
-
+	cout << "Enter a start node X value (0-" << length-1 << "): ";
+	cin >> startX;
+	cout << "\nEnter a start node Y value (0-" << length-1 << "): ";
+	cin >> startY;
+	cout << "\nEnter a goal node X value (0-" << length-1 << "): ";
+	cin >> goalX;
+	cout << "\nEnter a goal node Y value (0-" << length-1 << "): ";
+	cin >> goalY;
 
 	grid[startX][startY].start = true;
 	grid[goalX][goalY].goal = true;
 
 	Search route(grid[startX][startY], grid[goalX][goalY], grid);
 	route.findPath(length);
-
+	*/
+	
+	Fl_Window *window = new Fl_Window(1000,800);
+	Fl_Box *box = new Fl_Box(750,-300,250,1300,"1.Click to set a start point\n2.Right click to set a goal point\n3.Click again to set obstacles\n4.Press space to start the search.");
+	box->box(FL_UP_BOX);
+	box->labelsize(12);
+	for (int i = 0; i < length; i++){
+		for (int j = 0; j < length; j++){
+			Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
+			box -> box(FL_BORDER_BOX);
+		}
+	}
+	
+	window->end();
+	window->show(argc, argv);
+	Fl::run();
 	return 0;
+
+
 }
