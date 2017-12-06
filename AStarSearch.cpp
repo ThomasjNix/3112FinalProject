@@ -175,9 +175,13 @@ public:
 
 int main(int argc, char **argv)
 {
+<<<<<<< HEAD
 
 	int length = 25;
 	/*
+=======
+	int length = 25;
+>>>>>>> 587da8dc3be6b275b332800512d10fe867e7a557
 	Node **grid = new Node*[length];
 	for (int i = 0; i < length; i++){
 		grid[i] = new Node[length];
