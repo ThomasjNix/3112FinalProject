@@ -15,8 +15,10 @@
 #include <iterator> 
 
 #include <FL/Fl.H>
-#include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
+#include <FL/fl_draw.H>
+#include <FL/Fl_Window.H>
+
 
 
 
@@ -62,6 +64,9 @@ public:
 	}
 	Node getGoal() {
 		return goal;
+	}
+	vector<Node> getClosedList(){
+		return closedList;
 	}
 	void findPath(int length) {
 		int tempCounter = 0;
@@ -165,6 +170,7 @@ public:
 							bestChoice = openList[li];
 						}
 					}
+					closedList.push_back(current);
 					current = bestChoice;
 				}
 			}			
@@ -175,13 +181,8 @@ public:
 
 int main(int argc, char **argv)
 {
-<<<<<<< HEAD
-
+	// Set up grid for boxes
 	int length = 25;
-	/*
-=======
-	int length = 25;
->>>>>>> 587da8dc3be6b275b332800512d10fe867e7a557
 	Node **grid = new Node*[length];
 	for (int i = 0; i < length; i++){
 		grid[i] = new Node[length];
@@ -193,8 +194,8 @@ int main(int argc, char **argv)
 		}
 	}
 
+	// Read user values
 	int startX, startY, goalX, goalY;
-
 	cout << "Enter a start node X value (0-" << length-1 << "): ";
 	cin >> startX;
 	cout << "\nEnter a start node Y value (0-" << length-1 << "): ";
@@ -204,21 +205,49 @@ int main(int argc, char **argv)
 	cout << "\nEnter a goal node Y value (0-" << length-1 << "): ";
 	cin >> goalY;
 
+
+	// Set values and start search
 	grid[startX][startY].start = true;
 	grid[goalX][goalY].goal = true;
-
 	Search route(grid[startX][startY], grid[goalX][goalY], grid);
 	route.findPath(length);
-	*/
 	
+	// Get path
+	vector<Node> closedList = route.getClosedList();
+	
+	// Define color constants
+	Fl_Color fl_BG_COLOR = fl_rgb_color(242,242,245);
+	Fl_Color fl_PATH = fl_rgb_color(255,0,0);
+	Fl_Color fl_START = fl_rgb_color(0,255,255);
+	Fl_Color fl_GOAL = fl_rgb_color(0,255,0);
+	
+	// Create window and apply properties
 	Fl_Window *window = new Fl_Window(1000,800);
-	Fl_Box *box = new Fl_Box(750,-300,250,1300,"1.Click to set a start point\n2.Right click to set a goal point\n3.Click again to set obstacles\n4.Press space to start the search.");
+	window -> color(fl_BG_COLOR);
+	
+	//Create box for instructions and set values
+	Fl_Box *box = new Fl_Box(750,-300,250,1300,"1.Click to set a start point\n2.Right click to set a goal point\n3.Click again to set obstacles\n4.Press space to start the search.\n\nCyan is the start\nGreen is the goal\nRed is the path\nGray indicates an obstacle");
 	box->box(FL_UP_BOX);
 	box->labelsize(12);
+	
+	
 	for (int i = 0; i < length; i++){
 		for (int j = 0; j < length; j++){
 			Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
 			box -> box(FL_BORDER_BOX);
+			
+			for (int p = 0; p < closedList.size(); p++){
+				if (i == closedList[p].x && j == closedList[p].y){
+					box -> color(fl_PATH);
+				}
+				if (i == closedList[0].x && j == closedList[0].y){
+					box -> color(fl_START);
+				}
+				if (i == closedList.back().x && j == closedList.back().y){
+					box -> color(fl_GOAL);
+				}
+			}
+
 		}
 	}
 	
