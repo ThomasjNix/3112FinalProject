@@ -42,51 +42,34 @@ public:
 		goal = g;
 		grid = m;
 	}
-
 	Search(Node **m) {
 		grid = m;
 	}
-
 	void setStart(Node s) {
 		start = s;
 	}
-
 	Node getStart() {
 		return start;
 	}
-
 	void setGoal(Node g) {
 		goal = g;
 	}
-
 	Node getGoal() {
 		return goal;
 	}
-
 	void findPath(int length) {
 		int tempCounter = 0;
 		Node current;
-
-		cout << "GOAL NODE: [" << goal.x << "," << goal.y << "]" << endl;
+		current = start;
+		cout << "\n\n====================\nCURRENT NODE: [" << current.x << "," << current.y << "]" << endl;
+		cout << "GOAL NODE: [" << goal.x << "," << goal.y << "]\n====================\n" << endl;
 		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length; j++) {
 				grid[i][j].h = (abs(i - goal.x) + (abs(j - goal.y)));
 			}
 		}
 		bool found = false;
-		current = start;
-		cout << "CURRENT NODE: [" << current.x << "," << current.y << "]" << endl;
-		cout << "GRID:\n[";
-		for (int i = 0; i < length; i++) {
-			for (int j = 0; j < length; j++) {
-				cout << " {";
-				cout << grid[i][j].x;
-				cout << ", " << grid[i][j].y;
-				cout << "} ";
-			}
-		}
-		cout << " ]";
-		cout << "]" << endl;
+
 		//iterates at each step of path
 		while (!found) {
 			if (current.x == goal.x && current.y == goal.y) {
@@ -132,8 +115,9 @@ public:
 								}else{
 									i = k;
 									j = l;
-								}								
-
+								}
+									
+									// Default closed list contains bool to false
 									bool inClosedList = false;
 									
 									// Check if potential next node already exists in closedList
@@ -150,7 +134,6 @@ public:
 									 current node, then set g and f values.
 									*/
 									if	(!grid[current.x + i][current.y + j].blocked && !inClosedList){
-																			
 										grid[current.x + i][current.y + j].parent = &current;
 										if (abs(i)==1 && abs(j)==1) {
 											grid[current.x + i][current.y + j].g = 10 + grid[current.x][current.y].g;
@@ -160,16 +143,14 @@ public:
 										}
 										grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
 										openList.push_back(grid[current.x + i][current.y + j]);
-
 									}else{
 	 									cout << "Node [" << grid[current.x + i][current.y + j].x << "," << grid[current.x + i][current.y + j].y << "] is either blocked or in the closed loop." << endl;
 									}
-
 						}
 					}
 				}
 				if (openList.empty()){
-								found = true;
+					found = true;
 				}
 				if (!found){
 					Node bestChoice = openList.at(0);
@@ -182,20 +163,17 @@ public:
 				}
 			}			
 		}
-		cout << "Current node: [" << current.x << "," << current.y << "]" << endl;
+		cout << "End node: [" << current.x << "," << current.y << "]" << endl;
 	}
 };
 
 int main()
 {
-	cout << "Enter the length of one side of a square map: " << endl;
-	int length;
-	cin >> length;
+	int length = 25;
 	Node **grid = new Node*[length];
-	for (int i = 0; i < length; i++) {
+	for (int i = 0; i < length; i++){
 		grid[i] = new Node[length];
 	}
-
 	for (int i = 0; i < length; i++) {
 		for (int j = 0; j < length; j++) {
 			grid[i][j].x = i;
@@ -205,12 +183,14 @@ int main()
 
 	int startX, startY, goalX, goalY;
 
-	cout << "Enter a starting Node x and then y position: " << endl;
-	cin >> startX >> startY;
-
-	cout << "Enter a goal Node x and then Y position: " << endl;
-	cin >> goalX >> goalY;
-
+	cout << "Enter a start node X value (0-" << length-1 << "): ";
+	cin >> startX;
+	cout << "\nEnter a start node Y value (0-" << length-1 << "): ";
+	cin >> startY;
+	cout << "\nEnter a goal node X value (0-" << length-1 << "): ";
+	cin >> goalX;
+	cout << "\nEnter a goal node Y value (0-" << length-1 << "): ";
+	cin >> goalY;
 
 	grid[startX][startY].start = true;
 	grid[goalX][goalY].goal = true;
