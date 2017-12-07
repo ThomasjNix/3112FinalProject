@@ -135,7 +135,6 @@ public:
 									for (vector<Node>::iterator it = closedList.begin(); it != closedList.end(); it++){
 										if ((*it).x == grid[current.x + i][current.y + j].x && (*it).y == grid[current.x + i][current.y + j].y){
 											inClosedList = true;
-											cout << "Node [" << (*it).x << "," << (*it).y << "] is in the closed loop!" << endl;
 										}
 									}
 									
@@ -154,8 +153,10 @@ public:
 										}
 										grid[current.x + i][current.y + j].f = grid[current.x + i][current.y + j].g + grid[current.x + i][current.y + j].h;	
 										openList.push_back(grid[current.x + i][current.y + j]);
-									}else{
-	 									cout << "Node [" << grid[current.x + i][current.y + j].x << "," << grid[current.x + i][current.y + j].y << "] is either blocked or in the closed loop." << endl;
+									}
+									
+									if (grid[current.x + i][current.y + j].blocked){
+	 									cout << "Node [" << grid[current.x + i][current.y + j].x << "," << grid[current.x + i][current.y + j].y << "] is blocked!" << endl;
 									}
 						}
 					}
@@ -209,7 +210,58 @@ int main(int argc, char **argv)
 	// Set values and start search
 	grid[startX][startY].start = true;
 	grid[goalX][goalY].goal = true;
+	
+	
+// TEMPORARY: Manually setting blocked nodes for testing
+	grid[3][3].blocked = true;
+		grid[3][4].blocked = true;
+			grid[3][5].blocked = true;
+				grid[3][6].blocked = true;
+	grid[4][3].blocked = true;
+		grid[4][4].blocked = true;
+			grid[4][5].blocked = true;
+				grid[4][6].blocked = true;
+	grid[5][3].blocked = true;
+		grid[5][4].blocked = true;
+			grid[5][5].blocked = true;
+				grid[5][6].blocked = true;
+	grid[6][3].blocked = true;
+		grid[6][4].blocked = true;
+			grid[6][5].blocked = true;
+				grid[6][6].blocked = true;
+	grid[10][15].blocked = true;
+		grid[10][16].blocked = true;
+			grid[10][17].blocked = true;
+				grid[10][18].blocked = true;
+	grid[11][15].blocked = true;
+		grid[11][16].blocked = true;
+			grid[11][17].blocked = true;
+				grid[11][18].blocked = true;
+	grid[12][15].blocked = true;
+		grid[12][16].blocked = true;
+			grid[12][17].blocked = true;
+				grid[12][18].blocked = true;
+	grid[13][15].blocked = true;
+		grid[13][16].blocked = true;
+			grid[13][17].blocked = true;
+				grid[13][18].blocked = true;
+	grid[14][15].blocked = true;
+		grid[14][16].blocked = true;
+			grid[14][17].blocked = true;
+				grid[14][18].blocked = true;
+					grid[19][19].blocked = true;
+										grid[19][20].blocked = true;
+															grid[19][21].blocked = true;
+					grid[20][19].blocked = true;
+										
+															grid[20][21].blocked = true;
+					grid[21][19].blocked = true;
+										grid[21][20].blocked = true;
+															grid[21][21].blocked = true;
+				
+				
 	Search route(grid[startX][startY], grid[goalX][goalY], grid);
+	
 	route.findPath(length);
 	
 	// Get path
@@ -220,7 +272,8 @@ int main(int argc, char **argv)
 	Fl_Color fl_PATH = fl_rgb_color(255,0,0);
 	Fl_Color fl_START = fl_rgb_color(0,255,255);
 	Fl_Color fl_GOAL = fl_rgb_color(0,255,0);
-	
+	Fl_Color fl_BLOCKED = fl_rgb_color(100,100,100);
+		
 	// Create window and apply properties
 	Fl_Window *window = new Fl_Window(1000,800);
 	window -> color(fl_BG_COLOR);
@@ -240,11 +293,14 @@ int main(int argc, char **argv)
 				if (i == closedList[p].x && j == closedList[p].y){
 					box -> color(fl_PATH);
 				}
-				if (i == closedList[0].x && j == closedList[0].y){
+				if (i == startX && j == startY){
 					box -> color(fl_START);
 				}
-				if (i == closedList.back().x && j == closedList.back().y){
+				if (i == goalX && j == goalY){
 					box -> color(fl_GOAL);
+				}
+				if (grid[i][j].blocked){
+					box -> color(fl_BLOCKED);
 				}
 			}
 
