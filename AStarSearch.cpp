@@ -5,7 +5,6 @@
 	 Professor Kalpathi Subramanian
 */
 
-
 #include <iostream>
 #include <algorithm>
 #include <time.h>
@@ -16,11 +15,12 @@
 
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Button.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Text_Display.H>
+//#include <FL/Fl_Label.H>
 #include <FL/Fl_Window.H>
-
-
-
 
 using namespace std;
 
@@ -180,115 +180,149 @@ public:
 	}
 };
 
-int main(int argc, char **argv)
-{
-	// Set up grid for boxes
-	int length = 25;
-	Node **grid = new Node*[length];
-	for (int i = 0; i < length; i++){
-		grid[i] = new Node[length];
-	}
-	for (int i = 0; i < length; i++) {
-		for (int j = 0; j < length; j++) {
-			grid[i][j].x = i;
-			grid[i][j].y = j;
-		}
-	}
 
-	// Read user values
-	int startX, startY, goalX, goalY;
-	cout << "Enter a start node X value (0-" << length-1 << "): ";
-	cin >> startX;
-	cout << "\nEnter a start node Y value (0-" << length-1 << "): ";
-	cin >> startY;
-	cout << "\nEnter a goal node X value (0-" << length-1 << "): ";
-	cin >> goalX;
-	cout << "\nEnter a goal node Y value (0-" << length-1 << "): ";
-	cin >> goalY;
-
-
-	// Set values and start search
-	grid[startX][startY].start = true;
-	grid[goalX][goalY].goal = true;
-	
-	
-// TEMPORARY: Manually setting blocked nodes for testing
-	grid[3][3].blocked = true;
-		grid[3][4].blocked = true;
+class GridDraw{
+	private:
+		Node **grid;		
+		vector<Node> closedList;
+		int startX, startY, goalX, goalY, length;
+	public: 
+		GridDraw(){
+				length = 25;
+			grid = new Node*[length];
+			for (int i = 0; i < length; i++){
+				grid[i] = new Node[length];
+			}
+			for (int i = 0; i < length; i++) {
+				for (int j = 0; j < length; j++) {
+					grid[i][j].x = i;
+					grid[i][j].y = j;
+				}
+			}
+		}	
+		void setBlockedNodes(){
+			// TEMPORARY: Manually setting blocked nodes for testing
+			grid[3][3].blocked = true;
+			grid[3][4].blocked = true;
 			grid[3][5].blocked = true;
-				grid[3][6].blocked = true;
-	grid[4][3].blocked = true;
-		grid[4][4].blocked = true;
+			grid[3][6].blocked = true;
+			grid[4][3].blocked = true;
+			grid[4][4].blocked = true;
 			grid[4][5].blocked = true;
-				grid[4][6].blocked = true;
-	grid[5][3].blocked = true;
-		grid[5][4].blocked = true;
+			grid[4][6].blocked = true;
+			grid[5][3].blocked = true;
+			grid[5][4].blocked = true;
 			grid[5][5].blocked = true;
-				grid[5][6].blocked = true;
-	grid[6][3].blocked = true;
-		grid[6][4].blocked = true;
+			grid[5][6].blocked = true;
+			grid[6][3].blocked = true;
+			grid[6][4].blocked = true;
 			grid[6][5].blocked = true;
-				grid[6][6].blocked = true;
-	grid[10][15].blocked = true;
-		grid[10][16].blocked = true;
+			grid[6][6].blocked = true;
+			grid[10][15].blocked = true;
+			grid[10][16].blocked = true;
 			grid[10][17].blocked = true;
-				grid[10][18].blocked = true;
-	grid[11][15].blocked = true;
-		grid[11][16].blocked = true;
+			grid[10][18].blocked = true;
+			grid[11][15].blocked = true;
+			grid[11][16].blocked = true;
 			grid[11][17].blocked = true;
-				grid[11][18].blocked = true;
-	grid[12][15].blocked = true;
-		grid[12][16].blocked = true;
+			grid[11][18].blocked = true;
+			grid[12][15].blocked = true;
+			grid[12][16].blocked = true;
 			grid[12][17].blocked = true;
-				grid[12][18].blocked = true;
-	grid[13][15].blocked = true;
-		grid[13][16].blocked = true;
+			grid[12][18].blocked = true;
+			grid[13][15].blocked = true;
+			grid[13][16].blocked = true;
 			grid[13][17].blocked = true;
-				grid[13][18].blocked = true;
-	grid[14][15].blocked = true;
-		grid[14][16].blocked = true;
+			grid[13][18].blocked = true;
+			grid[14][15].blocked = true;
+			grid[14][16].blocked = true;
 			grid[14][17].blocked = true;
-				grid[14][18].blocked = true;
-					grid[19][19].blocked = true;
-										grid[19][20].blocked = true;
-															grid[19][21].blocked = true;
-					grid[20][19].blocked = true;
-										
-															grid[20][21].blocked = true;
-					grid[21][19].blocked = true;
-										grid[21][20].blocked = true;
-															grid[21][21].blocked = true;
-				
-				
-	Search route(grid[startX][startY], grid[goalX][goalY], grid);
+			grid[14][18].blocked = true;
+			grid[19][19].blocked = true;
+			grid[19][20].blocked = true;
+			grid[19][21].blocked = true;
+			grid[20][19].blocked = true;
+			grid[20][21].blocked = true;
+			grid[21][19].blocked = true;
+			grid[21][20].blocked = true;
+			grid[21][21].blocked = true;
+		}
+		void drawPath(){
+				Search route(grid[startX][startY], grid[goalX][goalY], grid);
+				route.findPath(length);		
+				closedList = route.getClosedList();
+		}
+		void setStartNode(){
+			//To be replaced with user entered values
+			startX = 1;
+			startY = 1;
+		}
+		void setEndNode()	{
+			//To be replaced with user entered values
+			goalX = 24;
+			goalY = 24;
+		}
+		vector<Node> getClosedList(){
+			return closedList;
+		}
+		Node getFinalGrid(){
+			return **grid;
+		}
 	
-	route.findPath(length);
-	
-	// Get path
-	vector<Node> closedList = route.getClosedList();
-	
+};
+
+int main(int argc, char **argv){
+
+/*
+	Code execution: 
+	===============
+	1. Draw GUI, blank
+	2. Listen for Button click & verify values
+	|-3. Create instance of GridDraw
+	|-4. Call .setStartNode() and .setEndNode() to set start and end values
+	|-5. Perform search with .drawPath() [This will call operate on the Search class .findPath values, passing in values that were set in the GridDraw constructor
+	|----6. Call getClosedList() from the GridDraw class to gather the list of nodes to operate on 
+	|----7. Call getFinalGrid() to get the list of grid items to check for blocked nodes
+	|------8. Perform path drawing functionality based on closedList and grid data returned
+*/
+
 	// Define color constants
 	Fl_Color fl_BG_COLOR = fl_rgb_color(242,242,245);
 	Fl_Color fl_PATH = fl_rgb_color(255,0,0);
 	Fl_Color fl_START = fl_rgb_color(0,255,255);
 	Fl_Color fl_GOAL = fl_rgb_color(0,255,0);
 	Fl_Color fl_BLOCKED = fl_rgb_color(100,100,100);
-		
+	
+	
 	// Create window and apply properties
 	Fl_Window *window = new Fl_Window(1000,800);
 	window -> color(fl_BG_COLOR);
 	
 	//Create box for instructions and set values
-	Fl_Box *box = new Fl_Box(750,-300,250,1300,"1.Click to set a start point\n2.Right click to set a goal point\n3.Click again to set obstacles\n4.Press space to start the search.\n\nCyan is the start\nGreen is the goal\nRed is the path\nGray indicates an obstacle");
+
+	Fl_Box *box = new Fl_Box(750,-200,250,1300,"1.Enter Start and Goal X and Y Values\n2.Click Start\n3.Path will be drawn!");
 	box->box(FL_UP_BOX);
 	box->labelsize(12);
 	
+	Fl_Text_Display *lSX = new Fl_Text_Display(850,50,50,25, "Start X (0-24)");
+	Fl_Text_Display *lSY = new Fl_Text_Display(850,100,50,25, "Start Y (0-24)");
+	Fl_Text_Display *lGX = new Fl_Text_Display(850,150,50,25, "Goal X (0-24)");
+	Fl_Text_Display *lGY = new Fl_Text_Display(850,200,50,25, "Start Y (0-24)");
+
+
+	Fl_Input *istartX = new Fl_Input(850, 50,50,25);
+	Fl_Input *istartY = new Fl_Input(850,100,50,25);
+	Fl_Input *igoalX = new Fl_Input(850,150,50,25);
+	Fl_Input *igoalY = new Fl_Input(850,200,50,25);
 	
-	for (int i = 0; i < length; i++){
-		for (int j = 0; j < length; j++){
+	Fl_Button *startBtn = new Fl_Button(850,250,50,25, "Start");
+	
+
+	for (int i = 0; i < 25; i++){
+		for (int j = 0; j < 25; j++){
 			Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
 			box -> box(FL_BORDER_BOX);
-			
+			/*
 			for (int p = 0; p < closedList.size(); p++){
 				if (i == closedList[p].x && j == closedList[p].y){
 					box -> color(fl_PATH);
@@ -303,10 +337,19 @@ int main(int argc, char **argv)
 					box -> color(fl_BLOCKED);
 				}
 			}
-
+			*/
 		}
 	}
 	
+	// Listen for button click 
+	
+		// Create instance of the grid 
+		
+		// Call appropriate functions within the grid to get closedList and grid 
+		
+		// Redraw the grid
+	
+
 	window->end();
 	window->show(argc, argv);
 	Fl::run();
