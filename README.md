@@ -14,7 +14,18 @@
     <li>cmath</li>
     <li>vector</li>
     <li>iterator</li>
-    <li>FLTK (<em>coming soon...</em>)</li>
+    <li>sstream</li>
+    <li>FLTK 1.3.2 Dev
+		<ul>
+			<li>FL/Fl.H</li>
+			<li>FL/Fl_Box.H</li>
+			<li>FL/Fl_Button.H</li>
+			<li>FL/Fl_draw.H</li>
+			<li>FL/Fl_Int_Input.H</li>
+			<li>FL/Fl_Text_Display.H</li>
+			<li>FL/Fl_Window.H</li>
+		</ul>    
+    </li>
     <li>[TBD]</li>
 </ul>
 <h3>List of authors</h3>

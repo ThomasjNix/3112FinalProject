@@ -12,18 +12,29 @@
 #include <cmath>
 #include <vector>
 #include <iterator> 
+#include <sstream>
 
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/fl_draw.H>
-#include <FL/Fl_Input.H>
+#include <FL/Fl_Int_Input.H>
 #include <FL/Fl_Text_Display.H>
-//#include <FL/Fl_Label.H>
 #include <FL/Fl_Window.H>
 
 using namespace std;
 
+
+// Define color constants - These values will not change and need to be accessed from multiple sources
+Fl_Color fl_PATH = fl_rgb_color(255,0,0);
+Fl_Color fl_START = fl_rgb_color(0,255,255);
+Fl_Color fl_GOAL = fl_rgb_color(0,255,0);
+Fl_Color fl_BLOCKED = fl_rgb_color(100,100,100);
+Fl_Int_Input *istartX;
+Fl_Int_Input *istartY;
+Fl_Int_Input *igoalX;
+Fl_Int_Input *igoalY;
+	
 struct Node {
 	int x = 0;
 	int y = 0;
@@ -36,7 +47,6 @@ struct Node {
 	Node *parent;
 
 };
-
 
 class Search {
 private:
@@ -180,7 +190,6 @@ public:
 	}
 };
 
-
 class GridDraw{
 	private:
 		Node **grid;		
@@ -252,108 +261,116 @@ class GridDraw{
 				route.findPath(length);		
 				closedList = route.getClosedList();
 		}
-		void setStartNode(){
+		void setStartNode(int sX, int sY){
 			//To be replaced with user entered values
-			startX = 1;
-			startY = 1;
+			startX = sX;
+			startY = sY;
 		}
-		void setEndNode()	{
+		void setEndNode(int gX, int gY)	{
 			//To be replaced with user entered values
-			goalX = 24;
-			goalY = 24;
+			goalX = gX;
+			goalY = gY;
 		}
 		vector<Node> getClosedList(){
 			return closedList;
 		}
-		Node getFinalGrid(){
-			return **grid;
+		Node getFinalGrid(int i, int j){
+			return grid[i][j];
 		}
 	
 };
 
-int main(int argc, char **argv){
+class GuiWindow : public Fl_Window{
+	public: 
+		GuiWindow(int w, int h, const char* title):Fl_Window(w,h,title){
+			begin();
 
-/*
-	Code execution: 
-	===============
-	1. Draw GUI, blank
-	2. Listen for Button click & verify values
-	|-3. Create instance of GridDraw
-	|-4. Call .setStartNode() and .setEndNode() to set start and end values
-	|-5. Perform search with .drawPath() [This will call operate on the Search class .findPath values, passing in values that were set in the GridDraw constructor
-	|----6. Call getClosedList() from the GridDraw class to gather the list of nodes to operate on 
-	|----7. Call getFinalGrid() to get the list of grid items to check for blocked nodes
-	|------8. Perform path drawing functionality based on closedList and grid data returned
-*/
+			Fl_Box *box = new Fl_Box(750,-200,250,1300,"1.Enter Start and Goal X and Y Values\n2.Click Start\n3.Path will be drawn!");
+			box->box(FL_UP_BOX);
+			box->labelsize(12);
+	
+			Fl_Text_Display *lSX = new Fl_Text_Display(850,50,50,25, "Start X (0-24)");
+			Fl_Text_Display *lSY = new Fl_Text_Display(850,100,50,25, "Start Y (0-24)");
+			Fl_Text_Display *lGX = new Fl_Text_Display(850,150,50,25, "Goal X (0-24)");
+			Fl_Text_Display *lGY = new Fl_Text_Display(850,200,50,25, "Start Y (0-24)");
 
-	// Define color constants
-	Fl_Color fl_BG_COLOR = fl_rgb_color(242,242,245);
-	Fl_Color fl_PATH = fl_rgb_color(255,0,0);
-	Fl_Color fl_START = fl_rgb_color(0,255,255);
-	Fl_Color fl_GOAL = fl_rgb_color(0,255,0);
-	Fl_Color fl_BLOCKED = fl_rgb_color(100,100,100);
-	
-	
-	// Create window and apply properties
-	Fl_Window *window = new Fl_Window(1000,800);
-	window -> color(fl_BG_COLOR);
-	
-	//Create box for instructions and set values
+			istartX = new Fl_Int_Input(850, 50,50,25);
+			istartY = new Fl_Int_Input(850,100,50,25);
+			igoalX = new Fl_Int_Input(850,150,50,25);
+			igoalY = new Fl_Int_Input(850,200,50,25);
+			
+			
+			Fl_Button *startBtn = new Fl_Button(850,250,50,25, "Start");
+			startBtn -> callback(btn_cb, this);	
+			Fl_Box **box_grid = new Fl_Box*[25];
 
-	Fl_Box *box = new Fl_Box(750,-200,250,1300,"1.Enter Start and Goal X and Y Values\n2.Click Start\n3.Path will be drawn!");
-	box->box(FL_UP_BOX);
-	box->labelsize(12);
-	
-	Fl_Text_Display *lSX = new Fl_Text_Display(850,50,50,25, "Start X (0-24)");
-	Fl_Text_Display *lSY = new Fl_Text_Display(850,100,50,25, "Start Y (0-24)");
-	Fl_Text_Display *lGX = new Fl_Text_Display(850,150,50,25, "Goal X (0-24)");
-	Fl_Text_Display *lGY = new Fl_Text_Display(850,200,50,25, "Start Y (0-24)");
-
-
-	Fl_Input *istartX = new Fl_Input(850, 50,50,25);
-	Fl_Input *istartY = new Fl_Input(850,100,50,25);
-	Fl_Input *igoalX = new Fl_Input(850,150,50,25);
-	Fl_Input *igoalY = new Fl_Input(850,200,50,25);
-	
-	Fl_Button *startBtn = new Fl_Button(850,250,50,25, "Start");
-	
-
-	for (int i = 0; i < 25; i++){
-		for (int j = 0; j < 25; j++){
-			Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
-			box -> box(FL_BORDER_BOX);
-			/*
-			for (int p = 0; p < closedList.size(); p++){
-				if (i == closedList[p].x && j == closedList[p].y){
-					box -> color(fl_PATH);
-				}
-				if (i == startX && j == startY){
-					box -> color(fl_START);
-				}
-				if (i == goalX && j == goalY){
-					box -> color(fl_GOAL);
-				}
-				if (grid[i][j].blocked){
-					box -> color(fl_BLOCKED);
+			for (int i = 0; i < 25; i++){
+				for (int j = 0; j < 25; j++){
+		
+					Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
+					box -> box(FL_BORDER_BOX);
 				}
 			}
-			*/
+			
+			end();
+			show();
 		}
+		static void btn_cb(Fl_Widget *widget, void*w){
+			GuiWindow *gw = (GuiWindow*)w;
+				gw->make_current();
+				
+			int sX, sY, gX, gY;
+			stringstream s1(istartX -> value());
+			s1 >> sX;
+			stringstream s2(istartY -> value());
+			s2 >> sY;
+			stringstream s3(igoalX -> value());
+			s3 >> gX;
+			stringstream s4(igoalY -> value());
+			s4 >> gY;
+
+			// Create instance of the grid 
+				GridDraw newGrid;
+				newGrid.setBlockedNodes();
+				newGrid.setStartNode(sX,sY);
+				newGrid.setEndNode(gX,gY);
+				newGrid.drawPath();
+				vector<Node> closedList = newGrid.getClosedList();
+				Node **grid = new Node*[25];
+				for (int i = 0; i < 25; i++){
+					grid[i] = new Node[25];
+					for (int j = 0; j < 25; j++){
+						grid [i][j] = newGrid.getFinalGrid(i,j);
+					}
+				}
+				for (int i = 0; i < 25; i++){
+				for (int j = 0; j < 25; j++){
+					Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
+					box -> box(FL_BORDER_BOX);
+
+					for (int p = 0; p < closedList.size(); p++){
+						if (i == closedList[p].x && j == closedList[p].y){
+							box -> color(fl_PATH);
+						}
+						if (i == sX && j == sY){
+							box -> color(fl_START);
+						}
+						if (i == gX && j == gY){
+							box -> color(fl_GOAL);
+						}
+						if (grid[i][j].blocked){
+							box -> color(fl_BLOCKED);
+						}
+					}
+					widget->parent()->add(box);
+				}
+			}
+			((Fl_Window*)widget)->parent()->redraw();
 	}
-	
-	// Listen for button click 
-	
-		// Create instance of the grid 
-		
-		// Call appropriate functions within the grid to get closedList and grid 
-		
-		// Redraw the grid
-	
-
-	window->end();
-	window->show(argc, argv);
-	Fl::run();
-	return 0;
+};
 
 
+int main(int argc, char **argv){
+	GuiWindow gw(1000,800,"AStarSearch");
+	return Fl::run();
 }
