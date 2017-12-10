@@ -1,0 +1,141 @@
+\hypertarget{classSearch}{}\section{Search Class Reference}
+\label{classSearch}\index{Search@{Search}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSearch_a2998ad6a38a734499f2e1be4202b7fee}{Search} (\hyperlink{structNode}{Node} s, \hyperlink{structNode}{Node} g, \hyperlink{structNode}{Node} $\ast$$\ast$m)
+\item 
+\hyperlink{classSearch_aaac5fc9df8f0bf97f5344ee4c4f5486a}{Search} (\hyperlink{structNode}{Node} $\ast$$\ast$m)
+\item 
+void \hyperlink{classSearch_aac5b5b806c6283f2cc827ec14dac0ae3}{set\+Start} (\hyperlink{structNode}{Node} s)
+\item 
+\hyperlink{structNode}{Node} \hyperlink{classSearch_a4c59b1eff090896d91582d3cbe85c0f0}{get\+Start} ()
+\item 
+void \hyperlink{classSearch_adac3002d9754841372e39e249bc25981}{set\+Goal} (\hyperlink{structNode}{Node} g)
+\item 
+\hyperlink{structNode}{Node} \hyperlink{classSearch_a3a6f267df8e921ccb7feab65ad990948}{get\+Goal} ()
+\item 
+vector$<$ \hyperlink{structNode}{Node} $>$ \hyperlink{classSearch_a89084e77e24858c6edba6dd7b67b37ee}{get\+Closed\+List} ()
+\item 
+void \hyperlink{classSearch_a3ff4d1c82e4db3ef737baf1fff06490f}{find\+Path} (int length)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classSearch_a2998ad6a38a734499f2e1be4202b7fee}\label{classSearch_a2998ad6a38a734499f2e1be4202b7fee}} 
+\index{Search@{Search}!Search@{Search}}
+\index{Search@{Search}!Search@{Search}}
+\subsubsection{\texorpdfstring{Search()}{Search()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Search\+::\+Search (\begin{DoxyParamCaption}\item[{\hyperlink{structNode}{Node}}]{s,  }\item[{\hyperlink{structNode}{Node}}]{g,  }\item[{\hyperlink{structNode}{Node} $\ast$$\ast$}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor for the \hyperlink{classSearch}{Search} class, defines start node, goal node, and grid
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em g} & \\
+\hline
+{\em $\ast$$\ast$m} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSearch_aaac5fc9df8f0bf97f5344ee4c4f5486a}\label{classSearch_aaac5fc9df8f0bf97f5344ee4c4f5486a}} 
+\index{Search@{Search}!Search@{Search}}
+\index{Search@{Search}!Search@{Search}}
+\subsubsection{\texorpdfstring{Search()}{Search()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Search\+::\+Search (\begin{DoxyParamCaption}\item[{\hyperlink{structNode}{Node} $\ast$$\ast$}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Secondary Constructor for the \hyperlink{classSearch}{Search} class, defines the grid
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+{\em g} & \\
+\hline
+{\em $\ast$$\ast$m} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classSearch_a3ff4d1c82e4db3ef737baf1fff06490f}\label{classSearch_a3ff4d1c82e4db3ef737baf1fff06490f}} 
+\index{Search@{Search}!find\+Path@{find\+Path}}
+\index{find\+Path@{find\+Path}!Search@{Search}}
+\subsubsection{\texorpdfstring{find\+Path()}{findPath()}}
+{\footnotesize\ttfamily void Search\+::find\+Path (\begin{DoxyParamCaption}\item[{int}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Finds the path from the start node to the end node, avoiding any blocked nodes set in grid. closed\+List will contain the path that was traversed
+
+
+\begin{DoxyParams}{Parameters}
+{\em length} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSearch_a89084e77e24858c6edba6dd7b67b37ee}\label{classSearch_a89084e77e24858c6edba6dd7b67b37ee}} 
+\index{Search@{Search}!get\+Closed\+List@{get\+Closed\+List}}
+\index{get\+Closed\+List@{get\+Closed\+List}!Search@{Search}}
+\subsubsection{\texorpdfstring{get\+Closed\+List()}{getClosedList()}}
+{\footnotesize\ttfamily vector$<$\hyperlink{structNode}{Node}$>$ Search\+::get\+Closed\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the closed list \begin{DoxyVerb}@return closedList\end{DoxyVerb}
+ \mbox{\Hypertarget{classSearch_a3a6f267df8e921ccb7feab65ad990948}\label{classSearch_a3a6f267df8e921ccb7feab65ad990948}} 
+\index{Search@{Search}!get\+Goal@{get\+Goal}}
+\index{get\+Goal@{get\+Goal}!Search@{Search}}
+\subsubsection{\texorpdfstring{get\+Goal()}{getGoal()}}
+{\footnotesize\ttfamily \hyperlink{structNode}{Node} Search\+::get\+Goal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the goal node \begin{DoxyVerb}@return goal\end{DoxyVerb}
+ \mbox{\Hypertarget{classSearch_a4c59b1eff090896d91582d3cbe85c0f0}\label{classSearch_a4c59b1eff090896d91582d3cbe85c0f0}} 
+\index{Search@{Search}!get\+Start@{get\+Start}}
+\index{get\+Start@{get\+Start}!Search@{Search}}
+\subsubsection{\texorpdfstring{get\+Start()}{getStart()}}
+{\footnotesize\ttfamily \hyperlink{structNode}{Node} Search\+::get\+Start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+returns the starting node \begin{DoxyVerb}@return start\end{DoxyVerb}
+ \mbox{\Hypertarget{classSearch_adac3002d9754841372e39e249bc25981}\label{classSearch_adac3002d9754841372e39e249bc25981}} 
+\index{Search@{Search}!set\+Goal@{set\+Goal}}
+\index{set\+Goal@{set\+Goal}!Search@{Search}}
+\subsubsection{\texorpdfstring{set\+Goal()}{setGoal()}}
+{\footnotesize\ttfamily void Search\+::set\+Goal (\begin{DoxyParamCaption}\item[{\hyperlink{structNode}{Node}}]{g }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the goal node
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classSearch_aac5b5b806c6283f2cc827ec14dac0ae3}\label{classSearch_aac5b5b806c6283f2cc827ec14dac0ae3}} 
+\index{Search@{Search}!set\+Start@{set\+Start}}
+\index{set\+Start@{set\+Start}!Search@{Search}}
+\subsubsection{\texorpdfstring{set\+Start()}{setStart()}}
+{\footnotesize\ttfamily void Search\+::set\+Start (\begin{DoxyParamCaption}\item[{\hyperlink{structNode}{Node}}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the starting node
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+A\+Star\+Search.\+cpp\end{DoxyCompactItemize}

@@ -1,10 +1,13 @@
 /*
-	 AStarSearchProject.cpp : Defines the entry point for the console application.
-	 Authors: Thomas Nix, David Pushard, Elenimarys Henriquez
-	 ITCS 3112, 
-	 Professor Kalpathi Subramanian
+*  AStarSearcg.h
+*
+*	 Authors: Thomas Nix, David Pushard, Elenimarys Henriquez
+*	 ITCS 3112, 
+*	 Professor Kalpathi Subramanian
+*	 
 */
 
+// C++ Dependencies
 #include <iostream>
 #include <algorithm>
 #include <time.h>
@@ -14,6 +17,7 @@
 #include <iterator> 
 #include <sstream>
 
+// FLTK Dependencies
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
@@ -35,8 +39,10 @@ Fl_Int_Input *istartY;
 Fl_Int_Input *igoalX;
 Fl_Int_Input *igoalY;
 
-
-
+/*
+* All nodes will be related to blocks on a grid
+* Each node has a set of values important to determining the path
+*/
 struct Node {
 	int x = 0;
 	int y = 0;
@@ -51,6 +57,11 @@ struct Node {
 
 vector<Node> blockedNodes;
 
+/*
+* Search class is responsible for finding the path based on 
+* the grid of all blocked and unblocked nodes from the start to
+* goal nodes
+*/
 class Search {
 private:
 	Node start;
@@ -58,29 +69,80 @@ private:
 	Node **grid;
 	vector<Node> closedList;
 public:
+	/**
+	*  Constructor for the Search class, defines start node, goal node, and grid
+	*
+	*  @param s
+	*  @param g
+	*  @param **m
+	*		@return none
+	*/
 	Search(Node s, Node g, Node **m) {
 		start = s;
 		goal = g;
 		grid = m;
 	}
+	
+	/**
+	*  Secondary Constructor for the Search class, defines the grid
+	*
+	*  @param s
+	*  @param g
+	*  @param **m
+	*		@return none
+	*/
 	Search(Node **m) {
 		grid = m;
 	}
+		/**
+	*  Sets the starting node
+	*
+	*  @param s
+	*		@return none
+	*/
 	void setStart(Node s) {
 		start = s;
 	}
+		/**
+	*  returns the starting node
+	*
+	*		@return start
+	*/
 	Node getStart() {
 		return start;
 	}
+		/**
+	*  Sets the goal node
+	*
+	*  @param g
+	*		@return none
+	*/
 	void setGoal(Node g) {
 		goal = g;
 	}
+		/**
+	*  Returns the goal node
+	*
+	*		@return goal
+	*/
 	Node getGoal() {
 		return goal;
 	}
+		/**
+	*  Returns the closed list
+	*
+	*		@return closedList
+	*/
 	vector<Node> getClosedList(){
 		return closedList;
 	}
+		/**
+	*  Finds the path from the start node to the end node, avoiding any blocked nodes set in grid.
+	*  closedList will contain the path that was traversed
+	*
+	*  @param length
+	*		@return none
+	*/
 	void findPath(int length) {
 		int tempCounter = 0;
 		Node current;
@@ -193,68 +255,141 @@ public:
 	}
 };
 
-
+/*
+*
+* This class is responsible for organizing all of the information related to the grid and calling the functions to 
+* find the path from the start to end node. This simplifies interacting with the grid and path to gather pertinent information.
+*
+*/
 class GridDraw{
 	private:
 		Node **grid;		
 		vector<Node> closedList;
 		int startX, startY, goalX, goalY, length;
 	public: 
-		GridDraw(){
-				length = 25;
-			grid = new Node*[length];
-			for (int i = 0; i < length; i++){
-				grid[i] = new Node[length];
-			}
-			for (int i = 0; i < length; i++) {
-				for (int j = 0; j < length; j++) {
-					grid[i][j].x = i;
-					grid[i][j].y = j;
-				}
-			}
-		}	
-		void setBlockedNodes(int x, int y){
-			grid[x][y].blocked = true;
+		/**
+	*  Constructor for the GridDraw class. Sets the length and initializes a grid for use.
+	*
+	*		@return none
+	*/
+	GridDraw(){
+			length = 25;
+		grid = new Node*[length];
+		for (int i = 0; i < length; i++){
+			grid[i] = new Node[length];
 		}
-		void clearBlockedNodes(){
-			for (int i = 0; i < length; i++){
-				for (int j = 0; j < length; j++){
-					grid[i][j].blocked = false;
-				}
+		for (int i = 0; i < length; i++) {
+			for (int j = 0; j < length; j++) {
+				grid[i][j].x = i;
+				grid[i][j].y = j;
 			}
 		}
-		void drawPath(){
-				Search route(grid[startX][startY], grid[goalX][goalY], grid);
-				route.findPath(length);		
-				closedList = route.getClosedList();
+	}	
+		/**
+	*  Sets a node at a specified position in the grid to blocked
+	*
+	*  @param x
+	*  @param y
+	*		@return none
+	*/
+	void setBlockedNodes(int x, int y){
+		grid[x][y].blocked = true;
+	}
+		/**
+	*  Clears all blocked nodes (for use when the clear button is pressed)
+	*
+	*		@return none
+	*/
+	void clearBlockedNodes(){
+		for (int i = 0; i < length; i++){
+			for (int j = 0; j < length; j++){
+				grid[i][j].blocked = false;
+			}
 		}
-		void setStartNode(int sX, int sY){
-			//To be replaced with user entered values
-			startX = sX;
-			startY = sY;
-		}
-		void setEndNode(int gX, int gY)	{
-			//To be replaced with user entered values
-			goalX = gX;
-			goalY = gY;
-		}
-		vector<Node> getClosedList(){
-			return closedList;
-		}
-		Node getFinalGrid(int i, int j){
-			return grid[i][j];
-		}
+	}
+		/**
+	*  Calls functions to draw the path based on the data provided and sets closedList to the path upon completion
+	*
+	*		@return none
+	*/
+	void drawPath(){
+			Search route(grid[startX][startY], grid[goalX][goalY], grid);
+			route.findPath(length);		
+			closedList = route.getClosedList();
+	}
+		/**
+	*  Sets the start node for the grid
+	*
+	*  @param sX
+	*  @param sY
+	*		@return none
+	*/
+	void setStartNode(int sX, int sY){
+		//To be replaced with user entered values
+		startX = sX;
+		startY = sY;
+	}
+		/**
+	*  Sets the end node for the grid
+	*
+	*  @param gX
+	*  @param gY
+	*		@return none
+	*/
+	void setEndNode(int gX, int gY)	{
+		//To be replaced with user entered values
+		goalX = gX;
+		goalY = gY;
+	}
+			/**
+	*  Returns the closed list containing the final path
+	*
+	*		@return closedList
+	*/
+	vector<Node> getClosedList(){
+		return closedList;
+	}
+			/**
+	*  Returns the final grid node specified by given parameter indexes
+	*
+	*  @param i
+	*  @param j
+	*		@return grid[i][j]
+	*/
+	Node getFinalGrid(int i, int j){
+		return grid[i][j];
+	}
 	
 };
 
 
-
+/*
+*
+* This is a custom class derived from the FLTK Fl_Box class. It has added functionality to handle click events (setting blocked nodes) and to retain information about 
+* whether or not it is blocked and it's position in a grid.
+*
+*/
 class CustomBox : public Fl_Box{
 	public:
 		bool isBlocked = false;
 		int gridXPos, gridYPos;
+			/**
+		*  CustomBox constructor, derived from Fl_Box constructor. Creates a simple Fl_Box.
+		*
+		*  @param x
+		*  @param y
+		*  @param w
+		*  @param h
+		*		@return none
+		*/
 		CustomBox(int x, int y, int w, int h) : Fl_Box(FL_BORDER_BOX,x,y,w,h,""){
 		}
+			/**
+		*  Replaces the handle function for Fl_Box events, and if FL_PUSH (a click) is detected, sets the node to blocked, sets the color of the box, and redraws
+		*
+		*  @param e
+		*		@return e
+		*/
 		int handle(int e){
 			if (e == FL_PUSH){
 				isBlocked = true;
@@ -263,10 +398,17 @@ class CustomBox : public Fl_Box{
 				tempNode.y = gridYPos;
 				blockedNodes.push_back(tempNode);
 				color(fl_BLOCKED);
-				cout << "Clicked at [" << gridXPos << "," << gridYPos << "]" << endl;
 				redraw();
 			}
+			return e;
 		}
+							/**
+		*  Sets the gridXPos and gridYPos of the node
+		*
+		*  @param x
+		*  @param y
+		*		@return none
+		*/
 		void setGridPos(int x, int y){
 			gridXPos = x;
 			gridYPos = y;
@@ -274,9 +416,23 @@ class CustomBox : public Fl_Box{
 };	
 
 
-
+/*
+*
+* GuiWindow class derives from the Fl_Window and includes functionality specific to this code to interact between a grid of nodes and the CustomBox elements on the page
+* as well as to handle button click events with custom functions for the start and clear buttons
+*
+*
+*/
 class GuiWindow : public Fl_Window{
 	public: 
+			/**
+		*  GuiWindow constructor, derives from the Fl_Window constructor. Creates a new  GuiWindow complete with all buttons, labels, and boxes.
+		*
+		*  @param w
+		*  @param h
+		*  @param title
+		*		@return none
+		*/
 		GuiWindow(int w, int h, const char* title):Fl_Window(w,h,title){
 			begin();
 
@@ -310,7 +466,15 @@ class GuiWindow : public Fl_Window{
 			end();
 			show();
 		}
-		static void start_btn_cb(Fl_Widget *widget, void*w){
+			/**
+		*  Static start button callback function. Fires when the start button is clicked. Reads values from the input boxes and starts the process of 
+		*  drawing the grid of nodes as boxes onto the GuiWindow
+		*
+		*  @param *widget
+		*  @param *w
+		*		@return none
+		*/
+		static void start_btn_cb(Fl_Widget *widget, void *w){
 
 			int sX, sY, gX, gY;
 			stringstream s1(istartX -> value());
@@ -366,7 +530,14 @@ class GuiWindow : public Fl_Window{
 			}
 			((Fl_Window*)widget)->parent()->redraw();
 		}
-		
+			/**
+		*  Static clear button callback function. Fires when the clear button is clicked. Clears all blocked nodes. Reads values from the input boxes and starts the process of 
+		*  drawing the grid of nodes as boxes onto the GuiWindow.
+		*
+		*  @param *widget
+		*  @param *w
+		*		@return none
+		*/
 		static void clear_btn_cb(Fl_Widget *widget, void*w){
 			blockedNodes.clear();
 			int sX, sY, gX, gY;
@@ -423,8 +594,12 @@ class GuiWindow : public Fl_Window{
 			
 };
 
-
-int main(int argc, char **argv){
+			/**
+		*  Main function to begin the program by drawing a GuiWindow, which will then stay open and listen for further function calls.
+		*
+		*		@return Fl::run()
+		*/
+int main(){
 	GuiWindow gw(1000,800,"AStarSearch");
 	return Fl::run();
 }

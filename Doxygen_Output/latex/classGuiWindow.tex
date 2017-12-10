@@ -1,0 +1,89 @@
+\hypertarget{classGuiWindow}{}\section{Gui\+Window Class Reference}
+\label{classGuiWindow}\index{Gui\+Window@{Gui\+Window}}
+
+
+Inheritance diagram for Gui\+Window\+:
+% FIG 0
+
+
+Collaboration diagram for Gui\+Window\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classGuiWindow_a6c0470142b2c8b161cd7d2d247eb7841}{Gui\+Window} (int w, int h, const char $\ast$title)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \hyperlink{classGuiWindow_af16391005bf54c5fd789d6797ead1e37}{start\+\_\+btn\+\_\+cb} (Fl\+\_\+\+Widget $\ast$widget, void $\ast$w)
+\item 
+static void \hyperlink{classGuiWindow_a69b67adfbd43752c1ca82958279bb000}{clear\+\_\+btn\+\_\+cb} (Fl\+\_\+\+Widget $\ast$widget, void $\ast$w)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classGuiWindow_a6c0470142b2c8b161cd7d2d247eb7841}\label{classGuiWindow_a6c0470142b2c8b161cd7d2d247eb7841}} 
+\index{Gui\+Window@{Gui\+Window}!Gui\+Window@{Gui\+Window}}
+\index{Gui\+Window@{Gui\+Window}!Gui\+Window@{Gui\+Window}}
+\subsubsection{\texorpdfstring{Gui\+Window()}{GuiWindow()}}
+{\footnotesize\ttfamily Gui\+Window\+::\+Gui\+Window (\begin{DoxyParamCaption}\item[{int}]{w,  }\item[{int}]{h,  }\item[{const char $\ast$}]{title }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\hyperlink{classGuiWindow}{Gui\+Window} constructor, derives from the Fl\+\_\+\+Window constructor. Creates a new \hyperlink{classGuiWindow}{Gui\+Window} complete with all buttons, labels, and boxes.
+
+
+\begin{DoxyParams}{Parameters}
+{\em w} & \\
+\hline
+{\em h} & \\
+\hline
+{\em title} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classGuiWindow_a69b67adfbd43752c1ca82958279bb000}\label{classGuiWindow_a69b67adfbd43752c1ca82958279bb000}} 
+\index{Gui\+Window@{Gui\+Window}!clear\+\_\+btn\+\_\+cb@{clear\+\_\+btn\+\_\+cb}}
+\index{clear\+\_\+btn\+\_\+cb@{clear\+\_\+btn\+\_\+cb}!Gui\+Window@{Gui\+Window}}
+\subsubsection{\texorpdfstring{clear\+\_\+btn\+\_\+cb()}{clear\_btn\_cb()}}
+{\footnotesize\ttfamily static void Gui\+Window\+::clear\+\_\+btn\+\_\+cb (\begin{DoxyParamCaption}\item[{Fl\+\_\+\+Widget $\ast$}]{widget,  }\item[{void $\ast$}]{w }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Static clear button callback function. Fires when the clear button is clicked. Clears all blocked nodes. Reads values from the input boxes and starts the process of drawing the grid of nodes as boxes onto the \hyperlink{classGuiWindow}{Gui\+Window}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$widget} & \\
+\hline
+{\em $\ast$w} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGuiWindow_af16391005bf54c5fd789d6797ead1e37}\label{classGuiWindow_af16391005bf54c5fd789d6797ead1e37}} 
+\index{Gui\+Window@{Gui\+Window}!start\+\_\+btn\+\_\+cb@{start\+\_\+btn\+\_\+cb}}
+\index{start\+\_\+btn\+\_\+cb@{start\+\_\+btn\+\_\+cb}!Gui\+Window@{Gui\+Window}}
+\subsubsection{\texorpdfstring{start\+\_\+btn\+\_\+cb()}{start\_btn\_cb()}}
+{\footnotesize\ttfamily static void Gui\+Window\+::start\+\_\+btn\+\_\+cb (\begin{DoxyParamCaption}\item[{Fl\+\_\+\+Widget $\ast$}]{widget,  }\item[{void $\ast$}]{w }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Static start button callback function. Fires when the start button is clicked. Reads values from the input boxes and starts the process of drawing the grid of nodes as boxes onto the \hyperlink{classGuiWindow}{Gui\+Window}
+
+
+\begin{DoxyParams}{Parameters}
+{\em $\ast$widget} & \\
+\hline
+{\em $\ast$w} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+A\+Star\+Search.\+cpp\end{DoxyCompactItemize}

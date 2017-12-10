@@ -1,0 +1,132 @@
+\hypertarget{classGridDraw}{}\section{Grid\+Draw Class Reference}
+\label{classGridDraw}\index{Grid\+Draw@{Grid\+Draw}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classGridDraw_a76e640c80be87e8cf63265d01910790c}{Grid\+Draw} ()
+\item 
+void \hyperlink{classGridDraw_afa57a983e74b8bafa3b8f6f05c5455be}{set\+Blocked\+Nodes} (int x, int y)
+\item 
+void \hyperlink{classGridDraw_a091e7771219ae06092243170f4f0af3e}{clear\+Blocked\+Nodes} ()
+\item 
+void \hyperlink{classGridDraw_af6f905b2a61590c2d8582798e54a7d02}{draw\+Path} ()
+\item 
+void \hyperlink{classGridDraw_aeaef2de4037646f14f31dcbe4e770493}{set\+Start\+Node} (int sX, int sY)
+\item 
+void \hyperlink{classGridDraw_ae484a45193bd941122c5393705e4246f}{set\+End\+Node} (int gX, int gY)
+\item 
+vector$<$ \hyperlink{structNode}{Node} $>$ \hyperlink{classGridDraw_a72cff94711f11c2af81d66eef964d15b}{get\+Closed\+List} ()
+\item 
+\hyperlink{structNode}{Node} \hyperlink{classGridDraw_aa4c5ec7b24e2c2d0004bc22e7453f791}{get\+Final\+Grid} (int i, int j)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classGridDraw_a76e640c80be87e8cf63265d01910790c}\label{classGridDraw_a76e640c80be87e8cf63265d01910790c}} 
+\index{Grid\+Draw@{Grid\+Draw}!Grid\+Draw@{Grid\+Draw}}
+\index{Grid\+Draw@{Grid\+Draw}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{Grid\+Draw()}{GridDraw()}}
+{\footnotesize\ttfamily Grid\+Draw\+::\+Grid\+Draw (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor for the \hyperlink{classGridDraw}{Grid\+Draw} class. Sets the length and initializes a grid for use. \begin{DoxyVerb}@return none\end{DoxyVerb}
+ 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classGridDraw_a091e7771219ae06092243170f4f0af3e}\label{classGridDraw_a091e7771219ae06092243170f4f0af3e}} 
+\index{Grid\+Draw@{Grid\+Draw}!clear\+Blocked\+Nodes@{clear\+Blocked\+Nodes}}
+\index{clear\+Blocked\+Nodes@{clear\+Blocked\+Nodes}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{clear\+Blocked\+Nodes()}{clearBlockedNodes()}}
+{\footnotesize\ttfamily void Grid\+Draw\+::clear\+Blocked\+Nodes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Clears all blocked nodes (for use when the clear button is pressed) \begin{DoxyVerb}@return none\end{DoxyVerb}
+ \mbox{\Hypertarget{classGridDraw_af6f905b2a61590c2d8582798e54a7d02}\label{classGridDraw_af6f905b2a61590c2d8582798e54a7d02}} 
+\index{Grid\+Draw@{Grid\+Draw}!draw\+Path@{draw\+Path}}
+\index{draw\+Path@{draw\+Path}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{draw\+Path()}{drawPath()}}
+{\footnotesize\ttfamily void Grid\+Draw\+::draw\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Calls functions to draw the path based on the data provided and sets closed\+List to the path upon completion \begin{DoxyVerb}@return none\end{DoxyVerb}
+ \mbox{\Hypertarget{classGridDraw_a72cff94711f11c2af81d66eef964d15b}\label{classGridDraw_a72cff94711f11c2af81d66eef964d15b}} 
+\index{Grid\+Draw@{Grid\+Draw}!get\+Closed\+List@{get\+Closed\+List}}
+\index{get\+Closed\+List@{get\+Closed\+List}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{get\+Closed\+List()}{getClosedList()}}
+{\footnotesize\ttfamily vector$<$\hyperlink{structNode}{Node}$>$ Grid\+Draw\+::get\+Closed\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the closed list containing the final path \begin{DoxyVerb}@return closedList\end{DoxyVerb}
+ \mbox{\Hypertarget{classGridDraw_aa4c5ec7b24e2c2d0004bc22e7453f791}\label{classGridDraw_aa4c5ec7b24e2c2d0004bc22e7453f791}} 
+\index{Grid\+Draw@{Grid\+Draw}!get\+Final\+Grid@{get\+Final\+Grid}}
+\index{get\+Final\+Grid@{get\+Final\+Grid}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{get\+Final\+Grid()}{getFinalGrid()}}
+{\footnotesize\ttfamily \hyperlink{structNode}{Node} Grid\+Draw\+::get\+Final\+Grid (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Returns the final grid node specified by given parameter indexes
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & \\
+\hline
+{\em j} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+grid\mbox{[}i\mbox{]}\mbox{[}j\mbox{]} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGridDraw_afa57a983e74b8bafa3b8f6f05c5455be}\label{classGridDraw_afa57a983e74b8bafa3b8f6f05c5455be}} 
+\index{Grid\+Draw@{Grid\+Draw}!set\+Blocked\+Nodes@{set\+Blocked\+Nodes}}
+\index{set\+Blocked\+Nodes@{set\+Blocked\+Nodes}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{set\+Blocked\+Nodes()}{setBlockedNodes()}}
+{\footnotesize\ttfamily void Grid\+Draw\+::set\+Blocked\+Nodes (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets a node at a specified position in the grid to blocked
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGridDraw_ae484a45193bd941122c5393705e4246f}\label{classGridDraw_ae484a45193bd941122c5393705e4246f}} 
+\index{Grid\+Draw@{Grid\+Draw}!set\+End\+Node@{set\+End\+Node}}
+\index{set\+End\+Node@{set\+End\+Node}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{set\+End\+Node()}{setEndNode()}}
+{\footnotesize\ttfamily void Grid\+Draw\+::set\+End\+Node (\begin{DoxyParamCaption}\item[{int}]{gX,  }\item[{int}]{gY }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the end node for the grid
+
+
+\begin{DoxyParams}{Parameters}
+{\em gX} & \\
+\hline
+{\em gY} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classGridDraw_aeaef2de4037646f14f31dcbe4e770493}\label{classGridDraw_aeaef2de4037646f14f31dcbe4e770493}} 
+\index{Grid\+Draw@{Grid\+Draw}!set\+Start\+Node@{set\+Start\+Node}}
+\index{set\+Start\+Node@{set\+Start\+Node}!Grid\+Draw@{Grid\+Draw}}
+\subsubsection{\texorpdfstring{set\+Start\+Node()}{setStartNode()}}
+{\footnotesize\ttfamily void Grid\+Draw\+::set\+Start\+Node (\begin{DoxyParamCaption}\item[{int}]{sX,  }\item[{int}]{sY }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the start node for the grid
+
+
+\begin{DoxyParams}{Parameters}
+{\em sX} & \\
+\hline
+{\em sY} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+A\+Star\+Search.\+cpp\end{DoxyCompactItemize}

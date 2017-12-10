@@ -1,0 +1,98 @@
+\hypertarget{classCustomBox}{}\section{Custom\+Box Class Reference}
+\label{classCustomBox}\index{Custom\+Box@{Custom\+Box}}
+
+
+Inheritance diagram for Custom\+Box\+:
+% FIG 0
+
+
+Collaboration diagram for Custom\+Box\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCustomBox_a186d967346eae8862d354b9b3461ec1c}{Custom\+Box} (int x, int y, int w, int h)
+\item 
+int \hyperlink{classCustomBox_ae9696bd46ddadafb89af6f607974baa1}{handle} (int e)
+\item 
+void \hyperlink{classCustomBox_ada6d85111e7a80aacfaffc769dbe59bb}{set\+Grid\+Pos} (int x, int y)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classCustomBox_adc39d4108ebf1dc4cb57b7f418463827}\label{classCustomBox_adc39d4108ebf1dc4cb57b7f418463827}} 
+bool {\bfseries is\+Blocked} = false
+\item 
+\mbox{\Hypertarget{classCustomBox_a6f22bfd8457407ffdaee9785d78526c5}\label{classCustomBox_a6f22bfd8457407ffdaee9785d78526c5}} 
+int {\bfseries grid\+X\+Pos}
+\item 
+\mbox{\Hypertarget{classCustomBox_a53a48f574a1faf35bc32b7f7d79403ad}\label{classCustomBox_a53a48f574a1faf35bc32b7f7d79403ad}} 
+int {\bfseries grid\+Y\+Pos}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCustomBox_a186d967346eae8862d354b9b3461ec1c}\label{classCustomBox_a186d967346eae8862d354b9b3461ec1c}} 
+\index{Custom\+Box@{Custom\+Box}!Custom\+Box@{Custom\+Box}}
+\index{Custom\+Box@{Custom\+Box}!Custom\+Box@{Custom\+Box}}
+\subsubsection{\texorpdfstring{Custom\+Box()}{CustomBox()}}
+{\footnotesize\ttfamily Custom\+Box\+::\+Custom\+Box (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{int}]{w,  }\item[{int}]{h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\hyperlink{classCustomBox}{Custom\+Box} constructor, derived from Fl\+\_\+\+Box constructor. Creates a simple Fl\+\_\+\+Box.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em w} & \\
+\hline
+{\em h} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCustomBox_ae9696bd46ddadafb89af6f607974baa1}\label{classCustomBox_ae9696bd46ddadafb89af6f607974baa1}} 
+\index{Custom\+Box@{Custom\+Box}!handle@{handle}}
+\index{handle@{handle}!Custom\+Box@{Custom\+Box}}
+\subsubsection{\texorpdfstring{handle()}{handle()}}
+{\footnotesize\ttfamily int Custom\+Box\+::handle (\begin{DoxyParamCaption}\item[{int}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Replaces the handle function for Fl\+\_\+\+Box events, and if F\+L\+\_\+\+P\+U\+SH (a click) is detected, sets the node to blocked, sets the color of the box, and redraws
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+e 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCustomBox_ada6d85111e7a80aacfaffc769dbe59bb}\label{classCustomBox_ada6d85111e7a80aacfaffc769dbe59bb}} 
+\index{Custom\+Box@{Custom\+Box}!set\+Grid\+Pos@{set\+Grid\+Pos}}
+\index{set\+Grid\+Pos@{set\+Grid\+Pos}!Custom\+Box@{Custom\+Box}}
+\subsubsection{\texorpdfstring{set\+Grid\+Pos()}{setGridPos()}}
+{\footnotesize\ttfamily void Custom\+Box\+::set\+Grid\+Pos (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets the grid\+X\+Pos and grid\+Y\+Pos of the node
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+none 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+A\+Star\+Search.\+cpp\end{DoxyCompactItemize}
