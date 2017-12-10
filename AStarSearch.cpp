@@ -34,7 +34,9 @@ Fl_Int_Input *istartX;
 Fl_Int_Input *istartY;
 Fl_Int_Input *igoalX;
 Fl_Int_Input *igoalY;
-	
+
+
+
 struct Node {
 	int x = 0;
 	int y = 0;
@@ -45,8 +47,9 @@ struct Node {
 	bool goal = false;
 	bool blocked = false;
 	Node *parent;
-
 };
+
+vector<Node> blockedNodes;
 
 class Search {
 private:
@@ -190,6 +193,7 @@ public:
 	}
 };
 
+
 class GridDraw{
 	private:
 		Node **grid;		
@@ -209,52 +213,15 @@ class GridDraw{
 				}
 			}
 		}	
-		void setBlockedNodes(){
-			// TEMPORARY: Manually setting blocked nodes for testing
-			grid[3][3].blocked = true;
-			grid[3][4].blocked = true;
-			grid[3][5].blocked = true;
-			grid[3][6].blocked = true;
-			grid[4][3].blocked = true;
-			grid[4][4].blocked = true;
-			grid[4][5].blocked = true;
-			grid[4][6].blocked = true;
-			grid[5][3].blocked = true;
-			grid[5][4].blocked = true;
-			grid[5][5].blocked = true;
-			grid[5][6].blocked = true;
-			grid[6][3].blocked = true;
-			grid[6][4].blocked = true;
-			grid[6][5].blocked = true;
-			grid[6][6].blocked = true;
-			grid[10][15].blocked = true;
-			grid[10][16].blocked = true;
-			grid[10][17].blocked = true;
-			grid[10][18].blocked = true;
-			grid[11][15].blocked = true;
-			grid[11][16].blocked = true;
-			grid[11][17].blocked = true;
-			grid[11][18].blocked = true;
-			grid[12][15].blocked = true;
-			grid[12][16].blocked = true;
-			grid[12][17].blocked = true;
-			grid[12][18].blocked = true;
-			grid[13][15].blocked = true;
-			grid[13][16].blocked = true;
-			grid[13][17].blocked = true;
-			grid[13][18].blocked = true;
-			grid[14][15].blocked = true;
-			grid[14][16].blocked = true;
-			grid[14][17].blocked = true;
-			grid[14][18].blocked = true;
-			grid[19][19].blocked = true;
-			grid[19][20].blocked = true;
-			grid[19][21].blocked = true;
-			grid[20][19].blocked = true;
-			grid[20][21].blocked = true;
-			grid[21][19].blocked = true;
-			grid[21][20].blocked = true;
-			grid[21][21].blocked = true;
+		void setBlockedNodes(int x, int y){
+			grid[x][y].blocked = true;
+		}
+		void clearBlockedNodes(){
+			for (int i = 0; i < length; i++){
+				for (int j = 0; j < length; j++){
+					grid[i][j].blocked = false;
+				}
+			}
 		}
 		void drawPath(){
 				Search route(grid[startX][startY], grid[goalX][goalY], grid);
@@ -280,12 +247,40 @@ class GridDraw{
 	
 };
 
+
+
+class CustomBox : public Fl_Box{
+	public:
+		bool isBlocked = false;
+		int gridXPos, gridYPos;
+		CustomBox(int x, int y, int w, int h) : Fl_Box(FL_BORDER_BOX,x,y,w,h,""){
+		}
+		int handle(int e){
+			if (e == FL_PUSH){
+				isBlocked = true;
+				Node tempNode;
+				tempNode.x = gridXPos;
+				tempNode.y = gridYPos;
+				blockedNodes.push_back(tempNode);
+				color(fl_BLOCKED);
+				cout << "Clicked at [" << gridXPos << "," << gridYPos << "]" << endl;
+				redraw();
+			}
+		}
+		void setGridPos(int x, int y){
+			gridXPos = x;
+			gridYPos = y;
+		}
+};	
+
+
+
 class GuiWindow : public Fl_Window{
 	public: 
 		GuiWindow(int w, int h, const char* title):Fl_Window(w,h,title){
 			begin();
 
-			Fl_Box *box = new Fl_Box(750,-200,250,1300,"1.Enter Start and Goal X and Y Values\n2.Click Start\n3.Path will be drawn!");
+			Fl_Box *box = new Fl_Box(750,-200,250,1300,"1.Enter Start and Goal X and Y Values\n2.Click to place obstacles\n3.Click start to draw path\n4.Path will be drawn!\n\n\n\nClear will erase blocked nodes \nand redrawthe path with\n given coordinates");
 			box->box(FL_UP_BOX);
 			box->labelsize(12);
 	
@@ -301,24 +296,22 @@ class GuiWindow : public Fl_Window{
 			
 			
 			Fl_Button *startBtn = new Fl_Button(850,250,50,25, "Start");
-			startBtn -> callback(btn_cb, this);	
-			Fl_Box **box_grid = new Fl_Box*[25];
-
+			startBtn -> callback(start_btn_cb, this);	
+			
+			Fl_Button *clearBtn = new Fl_Button(850,300,50,25, "Clear");
+			clearBtn -> callback(clear_btn_cb, this);	
 			for (int i = 0; i < 25; i++){
 				for (int j = 0; j < 25; j++){
-		
-					Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
-					box -> box(FL_BORDER_BOX);
+					CustomBox *box = new CustomBox(30*i, 30*j, 30, 30);
+					box->setGridPos(i,j);
 				}
 			}
 			
 			end();
 			show();
 		}
-		static void btn_cb(Fl_Widget *widget, void*w){
-			GuiWindow *gw = (GuiWindow*)w;
-				gw->make_current();
-				
+		static void start_btn_cb(Fl_Widget *widget, void*w){
+
 			int sX, sY, gX, gY;
 			stringstream s1(istartX -> value());
 			s1 >> sX;
@@ -331,7 +324,11 @@ class GuiWindow : public Fl_Window{
 
 			// Create instance of the grid 
 				GridDraw newGrid;
-				newGrid.setBlockedNodes();
+				
+				for (int i = 0; i < blockedNodes.size(); i++){
+					newGrid.setBlockedNodes(blockedNodes.at(i).x, blockedNodes.at(i).y);
+				}
+
 				newGrid.setStartNode(sX,sY);
 				newGrid.setEndNode(gX,gY);
 				newGrid.drawPath();
@@ -343,30 +340,87 @@ class GuiWindow : public Fl_Window{
 						grid [i][j] = newGrid.getFinalGrid(i,j);
 					}
 				}
-				for (int i = 0; i < 25; i++){
-				for (int j = 0; j < 25; j++){
-					Fl_Box *box = new Fl_Box(30*i, 30*j, 30, 30);
-					box -> box(FL_BORDER_BOX);
 
-					for (int p = 0; p < closedList.size(); p++){
-						if (i == closedList[p].x && j == closedList[p].y){
-							box -> color(fl_PATH);
+				for (int i = 0; i < 25; i++){
+					for (int j = 0; j < 25; j++){
+						CustomBox *box = new CustomBox(30*i, 30*j, 30, 30);
+						box->setGridPos(i,j);
+						for (int p = 0; p < closedList.size(); p++){
+							if (i == closedList[p].x && j == closedList[p].y){
+								box -> color(fl_PATH);
+							}
+							if (i == sX && j == sY){
+								box -> color(fl_START);
+							}
+							if (i == gX && j == gY){
+								box -> color(fl_GOAL);
+							}
+							for (int z = 0; z < blockedNodes.size(); z++){
+								if (blockedNodes.at(z).x == i && blockedNodes.at(z).y == j){
+									box -> color(fl_BLOCKED);
+								}
+							}
 						}
-						if (i == sX && j == sY){
-							box -> color(fl_START);
-						}
-						if (i == gX && j == gY){
-							box -> color(fl_GOAL);
-						}
-						if (grid[i][j].blocked){
-							box -> color(fl_BLOCKED);
-						}
-					}
-					widget->parent()->add(box);
+						widget->parent()->add(box);
 				}
 			}
 			((Fl_Window*)widget)->parent()->redraw();
-	}
+		}
+		
+		static void clear_btn_cb(Fl_Widget *widget, void*w){
+			blockedNodes.clear();
+			int sX, sY, gX, gY;
+			stringstream s1(istartX -> value());
+			s1 >> sX;
+			stringstream s2(istartY -> value());
+			s2 >> sY;
+			stringstream s3(igoalX -> value());
+			s3 >> gX;
+			stringstream s4(igoalY -> value());
+			s4 >> gY;
+
+			// Create instance of the grid 
+				GridDraw newGrid;
+				
+				newGrid.clearBlockedNodes();
+				newGrid.setStartNode(sX,sY);
+				newGrid.setEndNode(gX,gY);
+				newGrid.drawPath();
+				vector<Node> closedList = newGrid.getClosedList();
+				Node **grid = new Node*[25];
+				for (int i = 0; i < 25; i++){
+					grid[i] = new Node[25];
+					for (int j = 0; j < 25; j++){
+						grid [i][j] = newGrid.getFinalGrid(i,j);
+					}
+				}
+
+				for (int i = 0; i < 25; i++){
+					for (int j = 0; j < 25; j++){
+						CustomBox *box = new CustomBox(30*i, 30*j, 30, 30);
+						box->setGridPos(i,j);
+						for (int p = 0; p < closedList.size(); p++){
+							if (i == closedList[p].x && j == closedList[p].y){
+								box -> color(fl_PATH);
+							}
+							if (i == sX && j == sY){
+								box -> color(fl_START);
+							}
+							if (i == gX && j == gY){
+								box -> color(fl_GOAL);
+							}
+							for (int z = 0; z < blockedNodes.size(); z++){
+								if (blockedNodes.at(z).x == i && blockedNodes.at(z).y == j){
+									box -> color(fl_BLOCKED);
+								}
+							}
+						}
+						widget->parent()->add(box);
+				}
+			}
+			((Fl_Window*)widget)->parent()->redraw();
+			}
+			
 };
 
 
