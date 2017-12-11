@@ -141,9 +141,9 @@ public:
 	*  closedList will contain the path that was traversed
 	*
 	*  @param length
-	*		@return none
+	*		@return found
 	*/
-	void findPath(int length) {
+		bool findPath(int length) {
 		int tempCounter = 0;
 		Node current;
 		current = start;
@@ -161,6 +161,7 @@ public:
 			if (current.x == goal.x && current.y == goal.y) {
 				cout << "Search Completed" << endl;
 				found = true;
+				return true;
 			}
 			else {
 				cout << "Current node: [" << current.x << "," << current.y << "]" << endl;
@@ -237,7 +238,7 @@ public:
 					}
 				}
 				if (openList.empty()){
-					found = true;
+					return false;
 				}
 				if (!found){
 					Node bestChoice = openList.at(0);
@@ -313,8 +314,17 @@ class GridDraw{
 	*		@return none
 	*/
 	void drawPath(){
+			bool badSearch = false;
 			Search route(grid[startX][startY], grid[goalX][goalY], grid);
-			route.findPath(length);		
+			badSearch = !(route.findPath(length));
+			if (badSearch){
+				cout << "Got here" << endl;
+				Fl_Window *errWin = new Fl_Window(400,150,"ERROR!");
+				Fl_Box *message = new Fl_Box(100,50,200,50,"Unable to find path to goal node!");
+				errWin->end();
+				errWin->show();
+				errWin->make_current();
+			}
 			closedList = route.getClosedList();
 	}
 		/**

@@ -17,7 +17,7 @@ void \hyperlink{classSearch_adac3002d9754841372e39e249bc25981}{set\+Goal} (\hype
 \item 
 vector$<$ \hyperlink{structNode}{Node} $>$ \hyperlink{classSearch_a89084e77e24858c6edba6dd7b67b37ee}{get\+Closed\+List} ()
 \item 
-void \hyperlink{classSearch_a3ff4d1c82e4db3ef737baf1fff06490f}{find\+Path} (int length)
+bool \hyperlink{classSearch_a603e51ec00f4667f7718a0670c61d9ba}{find\+Path} (int length)
 \end{DoxyCompactItemize}
 
 
@@ -65,11 +65,11 @@ none
 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{classSearch_a3ff4d1c82e4db3ef737baf1fff06490f}\label{classSearch_a3ff4d1c82e4db3ef737baf1fff06490f}} 
+\mbox{\Hypertarget{classSearch_a603e51ec00f4667f7718a0670c61d9ba}\label{classSearch_a603e51ec00f4667f7718a0670c61d9ba}} 
 \index{Search@{Search}!find\+Path@{find\+Path}}
 \index{find\+Path@{find\+Path}!Search@{Search}}
 \subsubsection{\texorpdfstring{find\+Path()}{findPath()}}
-{\footnotesize\ttfamily void Search\+::find\+Path (\begin{DoxyParamCaption}\item[{int}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily bool Search\+::find\+Path (\begin{DoxyParamCaption}\item[{int}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 Finds the path from the start node to the end node, avoiding any blocked nodes set in grid. closed\+List will contain the path that was traversed
 
@@ -79,7 +79,7 @@ Finds the path from the start node to the end node, avoiding any blocked nodes s
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-none 
+found 
 \end{DoxyReturn}
 \mbox{\Hypertarget{classSearch_a89084e77e24858c6edba6dd7b67b37ee}\label{classSearch_a89084e77e24858c6edba6dd7b67b37ee}} 
 \index{Search@{Search}!get\+Closed\+List@{get\+Closed\+List}}
